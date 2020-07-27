@@ -51,7 +51,7 @@ class MyGame(arcade.Window):
         self.xCollision = True
         self.yCollision = False
 
-        self.speeder = 5
+        self.speeder = 2
 
         self.bodyList = []
         self.i = 0
@@ -145,14 +145,14 @@ class MyGame(arcade.Window):
             self.ate = False
 
         for self.i in range (1, self.act+1):
-            if self.up == True and self.ArrayOfPresssedBottoms[self.counter] == 'R' and self.XbodyCoordinates[self.i - 1] > self.XbodyCoordinates[self.i] and self.ate == False:
+            if self.up == True and self.ArrayOfPresssedBottoms[self.counter] == 'R' and self.XTurn[self.counter] > self.XbodyCoordinates[self.i] and self.ate == False:
                 #self.bodyX1 = self.bodyX1 + delta_time * self.speeder
                 #for self.i in range (1, self.act):floor(self.XbodyCoordinates[self.i])
                 self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] + self.speeder
-            elif self.up == True and self.ArrayOfPresssedBottoms[self.counter] == 'R' and self.XbodyCoordinates[self.i - 1] < self.XbodyCoordinates[self.i] and self.ate == False:
+            """elif self.up == True and self.ArrayOfPresssedBottoms[self.counter] == 'R' and self.XbodyCoordinates[self.i - 1] < self.XbodyCoordinates[self.i] and self.ate == False:
                     self.bodyX1 = self.bodyX1 - self.speeder
                     #for self.i in range (1, self.act):
-                    self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] - self.speeder
+                    self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] - self.speeder"""
             if self.up == True and self.XbodyCoordinates[self.i]  == self.XbodyCoordinates[self.i-1] and self.ate == False:
                 self.bodyX1 = self.x
                 self.bodyY1 = self.y - radius*2
@@ -160,14 +160,14 @@ class MyGame(arcade.Window):
                 self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i - 1] - radius * 2
                 self.XbodyCoordinates[self.i] = self.XbodyCoordinates[self.i - 1]
 
-            if self.up == True and self.ArrayOfPresssedBottoms[self.counter] == 'L' and self.XbodyCoordinates[self.i - 1] < self.XbodyCoordinates[self.i] and self.ate == False:
+            if self.up == True and self.ArrayOfPresssedBottoms[self.counter] == 'L' and self.XTurn[self.counter] < self.XbodyCoordinates[self.i] and self.ate == False:
                 self.bodyX1 = self.bodyX1 - self.speeder
                 #for self.i in range (1, self.act):
                 self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] - self.speeder
-            elif self.up == True and self.ArrayOfPresssedBottoms[self.counter] == 'L' and self.XbodyCoordinates[self.i - 1] > self.XbodyCoordinates[self.i] and self.ate == False:
+            """elif self.up == True and self.ArrayOfPresssedBottoms[self.counter] == 'L' and self.XbodyCoordinates[self.i - 1] > self.XbodyCoordinates[self.i] and self.ate == False:
                 self.bodyX1 = self.bodyX1 + self.speeder
                 #for self.i in range (1, self.act):
-                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] + self.speeder
+                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] + self.speeder"""
             if self.up == True and self.XbodyCoordinates[self.i]  == self.XbodyCoordinates[self.i-1] and self.ate == False:
                 self.bodyX1 = self.x
                 self.bodyY1 = self.y - radius*2
@@ -176,14 +176,14 @@ class MyGame(arcade.Window):
                 self.XbodyCoordinates[self.i] = self.XbodyCoordinates[self.i - 1]
 
 
-            if self.down == True and self.ArrayOfPresssedBottoms[self.counter] == 'R' and self.XbodyCoordinates[self.i - 1] > self.XbodyCoordinates[self.i] and self.ate == False:
+            if self.down == True and self.ArrayOfPresssedBottoms[self.counter] == 'R' and self.XTurn[self.counter] > self.XbodyCoordinates[self.i] and self.ate == False:
                 self.bodyX1 = self.bodyX1 - self.speeder
     #            for self.i in range (1, self.act):
                 self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] + self.speeder
-            elif self.down == True and self.ArrayOfPresssedBottoms[self.counter] == 'R' and self.XbodyCoordinates[self.i - 1] < self.XbodyCoordinates[self.i] and self.ate == False:
+            """elif self.down == True and self.ArrayOfPresssedBottoms[self.counter] == 'R' and self.XbodyCoordinates[self.i - 1] < self.XbodyCoordinates[self.i] and self.ate == False:
                 self.bodyX1 = self.bodyX1 + self.speeder
 #                for self.i in range (1, self.act):
-                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] -  self.speeder
+                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] -  self.speeder"""
             if self.down == True and self.XbodyCoordinates[self.i]  == self.XbodyCoordinates[self.i-1] and self.ate == False:
                 self.bodyX1 = self.x
                 self.bodyY1 = self.y + radius*2
@@ -192,11 +192,11 @@ class MyGame(arcade.Window):
                 self.XbodyCoordinates[self.i] = self.XbodyCoordinates[self.i - 1]
 
 
-            if self.down == True and self.ArrayOfPresssedBottoms[self.counter] == 'L' and self.XbodyCoordinates[self.i - 1] > self.XbodyCoordinates[self.i] and self.ate == False:
+            """if self.down == True and self.ArrayOfPresssedBottoms[self.counter] == 'L' and self.XbodyCoordinates[self.i - 1] > self.XbodyCoordinates[self.i] and self.ate == False:
                 self.bodyX1 = self.bodyX1 + self.speeder
         #        for self.i in range (1, self.act):
-                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] + self.speeder
-            elif self.down == True and self.ArrayOfPresssedBottoms[self.counter] == 'L' and self.XbodyCoordinates[self.i - 1] < self.XbodyCoordinates[self.i] and self.ate == False:
+                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] + self.speeder"""
+            if self.down == True and self.ArrayOfPresssedBottoms[self.counter] == 'L' and self.XTurn[self.counter] < self.XbodyCoordinates[self.i] and self.ate == False:
                 self.bodyX1 = self.bodyX1 - self.speeder
     #            for self.i in range (1, self.act):
                 self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] - self.speeder
@@ -207,14 +207,14 @@ class MyGame(arcade.Window):
                 self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i - 1] + radius * 2
                 self.XbodyCoordinates[self.i] = self.XbodyCoordinates[self.i - 1]
 
-            if self.right == True and self.ArrayOfPresssedBottoms[self.counter] == 'U' and self.YbodyCoordinates[self.i - 1] > self.YbodyCoordinates[self.i] and self.ate == False:
+            if self.right == True and self.ArrayOfPresssedBottoms[self.counter] == 'U' and self.YTurn[self.counter] > self.YbodyCoordinates[self.i] and self.ate == False:
                 self.bodyY1 = self.bodyY1 + self.speeder
         #        for self.i in range (1, self.act):
                 self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] + self.speeder
-            elif self.right == True and self.ArrayOfPresssedBottoms[self.counter] == 'U' and self.YbodyCoordinates[self.i - 1] < self.YbodyCoordinates[self.i] and self.ate == False:
+            """elif self.right == True and self.ArrayOfPresssedBottoms[self.counter] == 'U' and self.YbodyCoordinates[self.i - 1] < self.YbodyCoordinates[self.i] and self.ate == False:
                 self.bodyY1 = self.bodyY1 - self.speeder
             #    for self.i in range (1, self.act):
-                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] - self.speeder
+                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] - self.speeder"""
             if self.right == True and self.YbodyCoordinates[self.i]  == self.YbodyCoordinates[self.i-1] and self.ate == False:
                 self.bodyY1 = self.y
                 self.bodyX1 = self.x + radius*2
@@ -222,14 +222,14 @@ class MyGame(arcade.Window):
                 self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i - 1] + radius * 2
                 self.YbodyCoordinates[self.i] = self.YbodyCoordinates[self.i - 1]
 
-            if self.left == True and self.ArrayOfPresssedBottoms[self.counter] == 'U' and self.YbodyCoordinates[self.i - 1] > self.YbodyCoordinates[self.i] and self.ate == False:
+            if self.left == True and self.ArrayOfPresssedBottoms[self.counter] == 'U' and self.YTurn[self.counter] > self.YbodyCoordinates[self.i] and self.ate == False:
                 self.bodyY1 = self.bodyY1 + self.speeder
         #        for self.i in range (1, self.act):
                 self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] + self.speeder
-            elif self.left == True and self.ArrayOfPresssedBottoms[self.counter] == 'U' and self.YbodyCoordinates[self.i - 1] < self.YbodyCoordinates[self.i] and self.ate == False:
+            """elif self.left == True and self.ArrayOfPresssedBottoms[self.counter] == 'U' and self.YbodyCoordinates[self.i - 1] < self.YbodyCoordinates[self.i] and self.ate == False:
                 self.bodyY1 = self.bodyY1 - self.speeder
         #        for self.i in range (1, self.act):
-                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] - self.speeder
+                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] - self.speeder"""
             if self.right == True and self.YbodyCoordinates[self.i]  == self.YbodyCoordinates[self.i-1] and self.ate == False:
                 self.bodyY1 = self.y
                 self.bodyX1 = self.x - radius*2
@@ -238,11 +238,11 @@ class MyGame(arcade.Window):
                 self.YbodyCoordinates[self.i] = self.YbodyCoordinates[self.i - 1]
 
 
-            if self.right == True and self.ArrayOfPresssedBottoms[self.counter] == 'D' and self.YbodyCoordinates[self.i - 1] > self.YbodyCoordinates[self.i] and self.ate == False:
+            """if self.right == True and self.ArrayOfPresssedBottoms[self.counter] == 'D' and self.YbodyCoordinates[self.i - 1] > self.YbodyCoordinates[self.i] and self.ate == False:
                 self.bodyY1 = self.bodyY1 + self.speeder
         #        for self.i in range (1, self.act):
-                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] + self.speeder
-            elif self.right == True and self.ArrayOfPresssedBottoms[self.counter] == 'D' and self.YbodyCoordinates[self.i - 1] < self.YbodyCoordinates[self.i] and self.ate == False:
+                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] + self.speeder"""
+            if self.right == True and self.ArrayOfPresssedBottoms[self.counter] == 'D' and self.YTurn[self.counter] < self.YbodyCoordinates[self.i] and self.ate == False:
                 self.bodyY1 = self.bodyY1 - self.speeder
     #            for self.i in range (1, self.act):
                 self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] - self.speeder
@@ -254,11 +254,11 @@ class MyGame(arcade.Window):
                 self.YbodyCoordinates[self.i] = self.YbodyCoordinates[self.i - 1]
 
 
-            if self.left == True and self.ArrayOfPresssedBottoms[self.counter] == 'D' and self.YbodyCoordinates[self.i - 1] > self.YbodyCoordinates[self.i] and self.ate == False:
+            """if self.left == True and self.ArrayOfPresssedBottoms[self.counter] == 'D' and self.YbodyCoordinates[self.i - 1] > self.YbodyCoordinates[self.i] and self.ate == False:
                 self.bodyY1 = self.bodyY1 + self.speeder
             #    for self.i in range (1, self.act):
-                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] + self.speeder
-            elif self.left == True and self.ArrayOfPresssedBottoms[self.counter] == 'D' and self.YbodyCoordinates[self.i - 1] < self.YbodyCoordinates[self.i] and self.ate == False:
+                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] + self.speeder"""
+            if self.left == True and self.ArrayOfPresssedBottoms[self.counter] == 'D' and self.YTurn[self.counter] < self.YbodyCoordinates[self.i] and self.ate == False:
                 self.bodyY1 = self.bodyY1 - self.speeder
         #        for self.i in range (1, self.act):
                 self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] - self.speeder
