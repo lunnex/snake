@@ -309,56 +309,61 @@ class MyGame(arcade.Window):
 
     def on_key_release(self, symbol, modifiers):
         if symbol == arcade.key.UP:
-            self.up = True
-            self.down = False
-            self.right = False
-            self.left = False
-            self.XTurn.append(self.x)
-            self.YTurn.append(self.y)
-            self.counter += 1
-            if self.counter >= 1:
+            if self.down == False:
+                self.up = True
+                self.down = False
+                self.right = False
+                self.left = False
+                self.XTurn.append(self.x)
+                self.YTurn.append(self.y)
+                self.counter += 1
+                if self.counter >= 1:
                 #self.XTurn.append(self.x)
                 #self.YTurn.append(self.y)
-                self.ArrayOfPresssedBottoms.append('U')
+                    self.ArrayOfPresssedBottoms.append('U')
 
         if symbol == arcade.key.DOWN:
-            self.up = False
-            self.down = True
-            self.right = False
-            self.left = False
-            self.XTurn.append(self.x)
-            self.YTurn.append(self.y)
-            self.counter += 1
-            if self.counter >= 1:
+            if self.up == False:
+                self.up = False
+                self.down = True
+                self.right = False
+                self.left = False
+                self.XTurn.append(self.x)
+                self.YTurn.append(self.y)
+                self.counter += 1
+                if self.counter >= 1:
                 #self.XTurn.append(self.x)
                 #self.YTurn.append(self.y)
-                self.ArrayOfPresssedBottoms.append('D')
+                    self.ArrayOfPresssedBottoms.append('D')
 
         if symbol == arcade.key.RIGHT:
-            self.up = False
-            self.down = False
-            self.right = True
-            self.left = False
-            self.XTurn.append(self.x)
-            self.YTurn.append(self.y)
-            self.counter += 1
-            if self.counter >= 1:
+            if self.left == False:
+                self.left = False
+                self.up = False
+                self.down = False
+                self.right = True
+                self.left = False
+                self.XTurn.append(self.x)
+                self.YTurn.append(self.y)
+                self.counter += 1
+                if self.counter >= 1:
                 #self.XTurn.append(self.x)
                 #self.YTurn.append(self.y)
-                self.ArrayOfPresssedBottoms.append('R')
+                    self.ArrayOfPresssedBottoms.append('R')
 
         if symbol == arcade.key.LEFT:
-            self.up = False
-            self.down = False
-            self.right = False
-            self.left = True
-            self.XTurn.append(self.x)
-            self.YTurn.append(self.y)
-            self.counter += 1
-            if self.counter >= 1:
+            if self.right == False:
+                self.up = False
+                self.down = False
+                self.right = False
+                self.left = True
+                self.XTurn.append(self.x)
+                self.YTurn.append(self.y)
+                self.counter += 1
+                if self.counter >= 1:
                 #self.XTurn.append(self.x)
                 #self.YTurn.append(self.y)
-                self.ArrayOfPresssedBottoms.append('L')
+                    self.ArrayOfPresssedBottoms.append('L')
 
 def main():
     game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
