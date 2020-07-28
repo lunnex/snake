@@ -51,18 +51,20 @@ class MyGame(arcade.Window):
         self.xCollision = True
         self.yCollision = False
 
-        self.speeder = 2
+        self.speeder = 4
 
         self.bodyList = []
         self.i = 0
         self.j = 0
         self.act = 0
 
+        self.maxSeagment = 20
+
         self.XbodyCoordinates = []
         self.YbodyCoordinates = []
-        while self.j < 10:
-            self.XbodyCoordinates.append(0)
-            self.YbodyCoordinates.append(0)
+        while self.j < self.maxSeagment:
+            self.XbodyCoordinates.append(-100)
+            self.YbodyCoordinates.append(-100)
             self.j += 1
 
         self.XTurn = [0]
@@ -74,7 +76,7 @@ class MyGame(arcade.Window):
     def on_draw(self):
 
         self.body_list = arcade.ShapeElementList()
-        for self.i in range(0, 9):
+        for self.i in range(0, self.maxSeagment):
             body = arcade.create_ellipse_filled(self.XbodyCoordinates[self.i], self.YbodyCoordinates[self.i], radius, radius, arcade.color.DARK_BLUE)
             self.body_list.append(body)
 
