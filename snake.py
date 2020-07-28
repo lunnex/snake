@@ -58,19 +58,21 @@ class MyGame(arcade.Window):
         self.j = 0
         self.act = 0
 
-        self.maxSeagment = 20
+        self.maxSeagment = 10
 
-        self.XbodyCoordinates = []
-        self.YbodyCoordinates = []
-        while self.j < self.maxSeagment:
-            self.XbodyCoordinates.append(-100)
-            self.YbodyCoordinates.append(-100)
-            self.j += 1
+        self.XbodyCoordinates = [1,2,3,4,5,6,7,8,9,10]
+        self.YbodyCoordinates = [1,2,3,4,5,6,7,8,9,10]
+        #while self.j < self.maxSeagment:
+         #  self.XbodyCoordinates.append(-100)
+        #    self.YbodyCoordinates.append(-100)
+        #    self.j += 1
 
         self.XTurn = [0]
         self.YTurn = [0]
 
     def setup(self):
+        self.XbodyCoordinates[0] = self.x
+        self.YbodyCoordinates[0] = self.y
         pass
 
     def on_draw(self):
@@ -83,7 +85,7 @@ class MyGame(arcade.Window):
 
         arcade.start_render()
         self.body_list.draw()
-        arcade.draw_circle_filled(self.x, self.y, radius, arcade.color.YELLOW)
+        #arcade.draw_circle_filled(self.x, self.y, radius, arcade.color.YELLOW)
         #arcade.draw_circle_filled(self.bodyX1, self.bodyY1, radius, arcade.color.YELLOW)
         #c = arcade.draw_circle_filled(self.x - radius, self.y - radius, radius, arcade.color.RED)
         arcade.draw_circle_filled(self.eatXPos, self.eatYPos, eatRadius, arcade.color.RED)
@@ -126,8 +128,8 @@ class MyGame(arcade.Window):
             self.SomethingIsPressed = True
 
 # Увеличение длины змеи после поедания
-        self.XbodyCoordinates[0] = self.x
-        self.YbodyCoordinates[0] = self.y
+        #self.XbodyCoordinates[0] = self.x
+        #self.YbodyCoordinates[0] = self.y
 
 # Описание движения всех сегментов змеи, кроме головы
         if self.ate == True and (self.up == True or self.down == True):
@@ -146,133 +148,27 @@ class MyGame(arcade.Window):
             self.YbodyCoordinates[self.act] = self.YbodyCoordinates[self.act - 1]
             self.ate = False
 
-        for self.i in range (1, self.act+1):
-            if self.up == True and self.ArrayOfPresssedBottoms[self.counter] == 'R' and self.XTurn[self.counter] > self.XbodyCoordinates[self.i] and self.ate == False:
-                #self.bodyX1 = self.bodyX1 + delta_time * self.speeder
-                #for self.i in range (1, self.act):floor(self.XbodyCoordinates[self.i])
-                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] + self.speeder
-            """elif self.up == True and self.ArrayOfPresssedBottoms[self.counter] == 'R' and self.XbodyCoordinates[self.i - 1] < self.XbodyCoordinates[self.i] and self.ate == False:
-                    self.bodyX1 = self.bodyX1 - self.speeder
-                    #for self.i in range (1, self.act):
-                    self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] - self.speeder"""
-            if self.up == True and self.XbodyCoordinates[self.i]  == self.XbodyCoordinates[self.i-1] and self.ate == False:
-                self.bodyX1 = self.x
-                self.bodyY1 = self.y - radius*2
-                #for self.i in range (1, self.act):
-                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i - 1] - radius * 2
-                self.XbodyCoordinates[self.i] = self.XbodyCoordinates[self.i - 1]
+        #for self.i in range (0, self.act+1):
+        if self.up == True:
+            self.YbodyCoordinates[-1:] + self.YbodyCoordinates[:-1]
+            #self.YbodyCoordinates[self.act] += self.speeder
+            self.XbodyCoordinates[-1:] + self.XbodyCoordinates[:-1]
+        if self.down == True:
+            self.YbodyCoordinates[-1:] + self.YbodyCoordinates[:-1]
+            self.YbodyCoordinates[self.act] -= self.speeder
+            self.XbodyCoordinates[-1:] + self.XbodyCoordinates[:-1]
+        if self.right == True:
+            self.YbodyCoordinates[-1:] + self.YbodyCoordinates[:-1]
+            self.XbodyCoordinates[self.act] += self.speeder
+            self.XbodyCoordinates[-1:] + self.XbodyCoordinates[:-1]
+        if self.left == True:
+            self.YbodyCoordinates[-1:] + self.YbodyCoordinates[:-1]
+            self.XbodyCoordinates[self.act] -= self.speeder
+            self.XbodyCoordinates[-1:] + self.XbodyCoordinates[:-1]
 
-            if self.up == True and self.ArrayOfPresssedBottoms[self.counter] == 'L' and self.XTurn[self.counter] < self.XbodyCoordinates[self.i] and self.ate == False:
-                self.bodyX1 = self.bodyX1 - self.speeder
-                #for self.i in range (1, self.act):
-                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] - self.speeder
-            """elif self.up == True and self.ArrayOfPresssedBottoms[self.counter] == 'L' and self.XbodyCoordinates[self.i - 1] > self.XbodyCoordinates[self.i] and self.ate == False:
-                self.bodyX1 = self.bodyX1 + self.speeder
-                #for self.i in range (1, self.act):
-                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] + self.speeder"""
-            if self.up == True and self.XbodyCoordinates[self.i]  == self.XbodyCoordinates[self.i-1] and self.ate == False:
-                self.bodyX1 = self.x
-                self.bodyY1 = self.y - radius*2
-            #    for self.i in range (1, self.act):
-                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i - 1] - radius * 2
-                self.XbodyCoordinates[self.i] = self.XbodyCoordinates[self.i - 1]
-
-
-            if self.down == True and self.ArrayOfPresssedBottoms[self.counter] == 'R' and self.XTurn[self.counter] > self.XbodyCoordinates[self.i] and self.ate == False:
-                self.bodyX1 = self.bodyX1 - self.speeder
-    #            for self.i in range (1, self.act):
-                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] + self.speeder
-            """elif self.down == True and self.ArrayOfPresssedBottoms[self.counter] == 'R' and self.XbodyCoordinates[self.i - 1] < self.XbodyCoordinates[self.i] and self.ate == False:
-                self.bodyX1 = self.bodyX1 + self.speeder
-#                for self.i in range (1, self.act):
-                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] -  self.speeder"""
-            if self.down == True and self.XbodyCoordinates[self.i]  == self.XbodyCoordinates[self.i-1] and self.ate == False:
-                self.bodyX1 = self.x
-                self.bodyY1 = self.y + radius*2
-        #        for self.i in range (1, self.act):
-                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i - 1] + radius * 2
-                self.XbodyCoordinates[self.i] = self.XbodyCoordinates[self.i - 1]
-
-
-            """if self.down == True and self.ArrayOfPresssedBottoms[self.counter] == 'L' and self.XbodyCoordinates[self.i - 1] > self.XbodyCoordinates[self.i] and self.ate == False:
-                self.bodyX1 = self.bodyX1 + self.speeder
-        #        for self.i in range (1, self.act):
-                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] + self.speeder"""
-            if self.down == True and self.ArrayOfPresssedBottoms[self.counter] == 'L' and self.XTurn[self.counter] < self.XbodyCoordinates[self.i] and self.ate == False:
-                self.bodyX1 = self.bodyX1 - self.speeder
-    #            for self.i in range (1, self.act):
-                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i] - self.speeder
-            if self.down == True and self.XbodyCoordinates[self.i]  == self.XbodyCoordinates[self.i-1] and self.ate == False:
-                self.bodyX1 = self.x
-                self.bodyY1 = self.y + radius*2
-        #        for self.i in range (1, self.act):
-                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i - 1] + radius * 2
-                self.XbodyCoordinates[self.i] = self.XbodyCoordinates[self.i - 1]
-
-            if self.right == True and self.ArrayOfPresssedBottoms[self.counter] == 'U' and self.YTurn[self.counter] > self.YbodyCoordinates[self.i] and self.ate == False:
-                self.bodyY1 = self.bodyY1 + self.speeder
-        #        for self.i in range (1, self.act):
-                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] + self.speeder
-            """elif self.right == True and self.ArrayOfPresssedBottoms[self.counter] == 'U' and self.YbodyCoordinates[self.i - 1] < self.YbodyCoordinates[self.i] and self.ate == False:
-                self.bodyY1 = self.bodyY1 - self.speeder
-            #    for self.i in range (1, self.act):
-                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] - self.speeder"""
-            if self.right == True and self.YbodyCoordinates[self.i]  == self.YbodyCoordinates[self.i-1] and self.ate == False:
-                self.bodyY1 = self.y
-                self.bodyX1 = self.x + radius*2
-        #        for self.i in range (1, self.act):
-                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i - 1] + radius * 2
-                self.YbodyCoordinates[self.i] = self.YbodyCoordinates[self.i - 1]
-
-            if self.left == True and self.ArrayOfPresssedBottoms[self.counter] == 'U' and self.YTurn[self.counter] > self.YbodyCoordinates[self.i] and self.ate == False:
-                self.bodyY1 = self.bodyY1 + self.speeder
-        #        for self.i in range (1, self.act):
-                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] + self.speeder
-            """elif self.left == True and self.ArrayOfPresssedBottoms[self.counter] == 'U' and self.YbodyCoordinates[self.i - 1] < self.YbodyCoordinates[self.i] and self.ate == False:
-                self.bodyY1 = self.bodyY1 - self.speeder
-        #        for self.i in range (1, self.act):
-                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] - self.speeder"""
-            if self.right == True and self.YbodyCoordinates[self.i]  == self.YbodyCoordinates[self.i-1] and self.ate == False:
-                self.bodyY1 = self.y
-                self.bodyX1 = self.x - radius*2
-        #        for self.i in range (1, self.act):
-                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i - 1] - radius * 2
-                self.YbodyCoordinates[self.i] = self.YbodyCoordinates[self.i - 1]
-
-
-            """if self.right == True and self.ArrayOfPresssedBottoms[self.counter] == 'D' and self.YbodyCoordinates[self.i - 1] > self.YbodyCoordinates[self.i] and self.ate == False:
-                self.bodyY1 = self.bodyY1 + self.speeder
-        #        for self.i in range (1, self.act):
-                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] + self.speeder"""
-            if self.right == True and self.ArrayOfPresssedBottoms[self.counter] == 'D' and self.YTurn[self.counter] < self.YbodyCoordinates[self.i] and self.ate == False:
-                self.bodyY1 = self.bodyY1 - self.speeder
-    #            for self.i in range (1, self.act):
-                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] - self.speeder
-            if self.right == True and self.YbodyCoordinates[self.i]  == self.YbodyCoordinates[self.i-1] and self.ate == False:
-                self.bodyY1 = self.y
-                self.bodyX1 = self.x - radius*2
-#                for self.i in range (1, self.act):
-                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i - 1] - radius * 2
-                self.YbodyCoordinates[self.i] = self.YbodyCoordinates[self.i - 1]
-
-
-            """if self.left == True and self.ArrayOfPresssedBottoms[self.counter] == 'D' and self.YbodyCoordinates[self.i - 1] > self.YbodyCoordinates[self.i] and self.ate == False:
-                self.bodyY1 = self.bodyY1 + self.speeder
-            #    for self.i in range (1, self.act):
-                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] + self.speeder"""
-            if self.left == True and self.ArrayOfPresssedBottoms[self.counter] == 'D' and self.YTurn[self.counter] < self.YbodyCoordinates[self.i] and self.ate == False:
-                self.bodyY1 = self.bodyY1 - self.speeder
-        #        for self.i in range (1, self.act):
-                self.YbodyCoordinates[self.i]  = self.YbodyCoordinates[self.i] - self.speeder
-            if self.left == True and self.YbodyCoordinates[self.i]  == self.YbodyCoordinates[self.i-1] and self.ate == False:
-                self.bodyY1 = self.y
-                self.bodyX1 = self.x + radius*2
-    #            for self.i in range (1, self.act):
-                self.XbodyCoordinates[self.i]  = self.XbodyCoordinates[self.i - 1] + radius * 2
-                self.YbodyCoordinates[self.i] = self.YbodyCoordinates[self.i - 1]
 
 # Момент поедания
-        if (self.y <= self.eatYPos + radius + eatRadius) and (self.y >= self.eatYPos - radius - eatRadius ) and (self.x <= self.eatXPos + radius + eatRadius) and (self.x >= self.eatXPos - radius - eatRadius):
+        if (self.YbodyCoordinates[0] <= self.eatYPos + radius + eatRadius) and (self.YbodyCoordinates[0] >= self.eatYPos - radius - eatRadius ) and (self.XbodyCoordinates[0] <= self.eatXPos + radius + eatRadius) and (self.XbodyCoordinates[0] >= self.eatXPos - radius - eatRadius):
             self.eatXPos = random.randint (1,SCREEN_WIDTH)
             self.eatYPos = random.randint (1,SCREEN_HEIGHT)
             self.ate = True
@@ -281,7 +177,7 @@ class MyGame(arcade.Window):
             self.act += 1
 # Для контроля переменных
         if (self.left == True) or (self.right == True) or (self.up == True) or (self.down == True):
-            print (self.eatXPos, ' ', self.eatYPos, ' ',self.x , ' ', self.y, ' ',  self.ArrayOfPresssedBottoms[self.counter], ' ', self.bodyX1, ' ', self.bodyY1, ' ', self.XbodyCoordinates[self.act], ' ', self.YbodyCoordinates[self.act], ' ',self.XTurn[self.counter] , ' ',self.YTurn[self.counter] )
+            print (self.act + 1 - self.i,' ',self.YbodyCoordinates[self.act + 1 - self.i], ' ', self.i - 1,' ',self.YbodyCoordinates[self.i - 1] )
 
     def on_key_press(self, symbol, modifiers):
         if symbol == arcade.key.UP:
