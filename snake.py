@@ -56,12 +56,20 @@ class MyGame(arcade.Window):
         self.bodyList = []
         self.i = 0
         self.j = 0
+
+        self.zU = 0
+        self.zD = 0
+        self.zL = 0
+        self.zR = 0
+
+        self.slower = 0
+
         self.act = 0
 
         self.maxSeagment = 10
 
-        self.XbodyCoordinates = [1,2,3,4,5,6,7,8,9,10]
-        self.YbodyCoordinates = [1,2,3,4,5,6,7,8,9,10]
+        self.XbodyCoordinates = [10,30,50,70,90,110,130,150,170,190]
+        self.YbodyCoordinates = [100,100,100,100,100,100,100,100,100,100]
         #while self.j < self.maxSeagment:
          #  self.XbodyCoordinates.append(-100)
         #    self.YbodyCoordinates.append(-100)
@@ -132,7 +140,7 @@ class MyGame(arcade.Window):
         #self.YbodyCoordinates[0] = self.y
 
 # Описание движения всех сегментов змеи, кроме головы
-        if self.ate == True and (self.up == True or self.down == True):
+        """if self.ate == True and (self.up == True or self.down == True):
                     #self.bodyX1 = self.x
                     #self.bodyY1 = self.y - radius*2
                     #for self.i in range (1, self.act):
@@ -146,28 +154,45 @@ class MyGame(arcade.Window):
                     #for self.i in range (1, self.act):
             self.XbodyCoordinates[self.act] = self.XbodyCoordinates[self.act - 1] - radius * 2
             self.YbodyCoordinates[self.act] = self.YbodyCoordinates[self.act - 1]
-            self.ate = False
+            self.ate = False"""
 
         #for self.i in range (0, self.act+1):
-        if self.up == True:
-            self.YbodyCoordinates = self.YbodyCoordinates[-1:] + self.YbodyCoordinates[:-1]
-            self.YbodyCoordinates[1] += radius
-            self.XbodyCoordinates = self.XbodyCoordinates[-1:] + self.XbodyCoordinates[:-1]
-        if self.down == True:
-            self.YbodyCoordinates = self.YbodyCoordinates[-1:] + self.YbodyCoordinates[:-1]
-            self.YbodyCoordinates[1] -= self.speeder
-            self.XbodyCoordinates = self.XbodyCoordinates[-1:] + self.XbodyCoordinates[:-1]
-        if self.right == True:
-            self.YbodyCoordinates = self.YbodyCoordinates[-1:] + self.YbodyCoordinates[:-1]
-            #self.XbodyCoordinates[0] += self.speeder
-            self.XbodyCoordinates = self.XbodyCoordinates[-1:] + self.XbodyCoordinates[:-1]
-            self.XbodyCoordinates[1] += self.speeder
-        if self.left == True:
-            self.YbodyCoordinates = self.YbodyCoordinates[-1:] + self.YbodyCoordinates[:-1]
-            #self.XbodyCoordinates[0] -= self.speeder
-            self.XbodyCoordinates = self.XbodyCoordinates[-1:] + self.XbodyCoordinates[:-1]
-            self.XbodyCoordinates[1] -= self.speeder
+        if self.slower % 7 == 0:
 
+            if self.up == True:
+                if self.zU <= 9:
+                    self.YbodyCoordinates[self.zU] = self.YbodyCoordinates[self.zU - 1] + radius * 2
+                    self.XbodyCoordinates[self.zU] = self.XbodyCoordinates[self.zU - 1]
+                    self.zU += 1
+                else:
+                    self.zU = 0
+
+            if self.down == True:
+                if self.zU <= 9:
+                    self.YbodyCoordinates[self.zU] = self.YbodyCoordinates[self.zU - 1] - radius * 2
+                    self.XbodyCoordinates[self.zU] = self.XbodyCoordinates[self.zU - 1]
+                    self.zU += 1
+                else:
+                    self.zU = 0
+
+            if self.left == True:
+                if self.zU <= 9:
+                    self.YbodyCoordinates[self.zU] = self.YbodyCoordinates[self.zU - 1]
+                    self.XbodyCoordinates[self.zU] = self.XbodyCoordinates[self.zU - 1] - radius * 2
+                    self.zU += 1
+                else:
+                    self.zU = 0
+
+            if self.right == True:
+                if self.zU <= 9:
+                    self.YbodyCoordinates[self.zU] = self.YbodyCoordinates[self.zU - 1]
+                    self.XbodyCoordinates[self.zU] = self.XbodyCoordinates[self.zU - 1] + radius * 2
+                    self.zU += 1
+                else:
+                    self.zU = 0
+            self.slower += 1
+        else:
+            self.slower += 1
 
 # Момент поедания
         if (self.YbodyCoordinates[0] <= self.eatYPos + radius + eatRadius) and (self.YbodyCoordinates[0] >= self.eatYPos - radius - eatRadius ) and (self.XbodyCoordinates[0] <= self.eatXPos + radius + eatRadius) and (self.XbodyCoordinates[0] >= self.eatXPos - radius - eatRadius):
@@ -179,7 +204,7 @@ class MyGame(arcade.Window):
             self.act += 1
 # Для контроля переменных
         if (self.left == True) or (self.right == True) or (self.up == True) or (self.down == True):
-            print (self.XbodyCoordinates )
+            print (self.YbodyCoordinates )
 
     def on_key_press(self, symbol, modifiers):
         if symbol == arcade.key.UP:
