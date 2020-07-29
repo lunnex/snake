@@ -71,8 +71,8 @@ class MyGame(arcade.Window):
         self.YTurn = [0]
 
     def setup(self):
-        self.XbodyCoordinates[0] = self.x
-        self.YbodyCoordinates[0] = self.y
+        #self.XbodyCoordinates[0] = self.x
+        #self.YbodyCoordinates[0] = self.y
         pass
 
     def on_draw(self):
@@ -150,21 +150,23 @@ class MyGame(arcade.Window):
 
         #for self.i in range (0, self.act+1):
         if self.up == True:
-            self.YbodyCoordinates[-1:] + self.YbodyCoordinates[:-1]
-            #self.YbodyCoordinates[self.act] += self.speeder
-            self.XbodyCoordinates[-1:] + self.XbodyCoordinates[:-1]
+            self.YbodyCoordinates = self.YbodyCoordinates[-1:] + self.YbodyCoordinates[:-1]
+            self.YbodyCoordinates[1] += radius
+            self.XbodyCoordinates = self.XbodyCoordinates[-1:] + self.XbodyCoordinates[:-1]
         if self.down == True:
-            self.YbodyCoordinates[-1:] + self.YbodyCoordinates[:-1]
-            self.YbodyCoordinates[self.act] -= self.speeder
-            self.XbodyCoordinates[-1:] + self.XbodyCoordinates[:-1]
+            self.YbodyCoordinates = self.YbodyCoordinates[-1:] + self.YbodyCoordinates[:-1]
+            self.YbodyCoordinates[1] -= self.speeder
+            self.XbodyCoordinates = self.XbodyCoordinates[-1:] + self.XbodyCoordinates[:-1]
         if self.right == True:
-            self.YbodyCoordinates[-1:] + self.YbodyCoordinates[:-1]
-            self.XbodyCoordinates[self.act] += self.speeder
-            self.XbodyCoordinates[-1:] + self.XbodyCoordinates[:-1]
+            self.YbodyCoordinates = self.YbodyCoordinates[-1:] + self.YbodyCoordinates[:-1]
+            #self.XbodyCoordinates[0] += self.speeder
+            self.XbodyCoordinates = self.XbodyCoordinates[-1:] + self.XbodyCoordinates[:-1]
+            self.XbodyCoordinates[1] += self.speeder
         if self.left == True:
-            self.YbodyCoordinates[-1:] + self.YbodyCoordinates[:-1]
-            self.XbodyCoordinates[self.act] -= self.speeder
-            self.XbodyCoordinates[-1:] + self.XbodyCoordinates[:-1]
+            self.YbodyCoordinates = self.YbodyCoordinates[-1:] + self.YbodyCoordinates[:-1]
+            #self.XbodyCoordinates[0] -= self.speeder
+            self.XbodyCoordinates = self.XbodyCoordinates[-1:] + self.XbodyCoordinates[:-1]
+            self.XbodyCoordinates[1] -= self.speeder
 
 
 # Момент поедания
@@ -177,7 +179,7 @@ class MyGame(arcade.Window):
             self.act += 1
 # Для контроля переменных
         if (self.left == True) or (self.right == True) or (self.up == True) or (self.down == True):
-            print (self.act + 1 - self.i,' ',self.YbodyCoordinates[self.act + 1 - self.i], ' ', self.i - 1,' ',self.YbodyCoordinates[self.i - 1] )
+            print (self.XbodyCoordinates )
 
     def on_key_press(self, symbol, modifiers):
         if symbol == arcade.key.UP:
