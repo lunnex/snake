@@ -166,13 +166,14 @@ class MyGame(arcade.Window):
                 self.score += 1
                 # Проверяем, чтобы координаты пищи не находились на змее, если это так, то генерируем новые координаты еды
                 for self.z in range (0, self.act - 1):
+                    print (self.z,' ', len(self.XbodyCoordinates),' ', len(self.YbodyCoordinates))
                     if (self.YbodyCoordinates[self.z] <= self.eatYPos + radius + eatRadius + 5) and (self.YbodyCoordinates[self.z] >= self.eatYPos - radius - eatRadius - 5) and (self.XbodyCoordinates[self.z] <= self.eatXPos + radius + eatRadius + 5) and (self.XbodyCoordinates[self.z] >= self.eatXPos - radius - eatRadius - 5):
                         self.eatXPos = random.randint (1,SCREEN_WIDTH) // 10 * 10
                         self.eatYPos = random.randint (1,SCREEN_HEIGHT) // 10 * 10
 
 # Для контроля переменных
-        if (self.left == True) or (self.right == True) or (self.up == True) or (self.down == True):
-            print (self.score, ' ', self.act, ' ',self.zU)
+        """if (self.left == True) or (self.right == True) or (self.up == True) or (self.down == True):
+            print (self.score, ' ', self.act, ' ',self.zU)"""
 
     def on_key_press(self, symbol, modifiers):
         if symbol == arcade.key.UP:
@@ -217,8 +218,29 @@ class MyGame(arcade.Window):
                 self.right = False
                 self.left = True
 
+class GameOverView(arcade.View):
+    """ Class to manage the game over view """
+    def on_show(self):
+        """ Called when switching to this view"""
+        arcade.set_background_color(arcade.color.BLACK)
+
+    def on_draw(self):
+        """ Draw the game over view """
+        arcade.start_render()
+        arcade.draw_text("Game Over - press ESCAPE to advance", WIDTH/2, HEIGHT/2,
+                         arcade.color.WHITE, 30, anchor_x="center")
+
+    def on_key_press(self, key, _modifiers):
+        """ If user hits escape, go back to the main menu view """
+        if key == arcade.key.ESCAPE:
+            menu_view = MenuView()
+            self.window.show_view(menu_view)
+
+
 def main():
     game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
+    menu_view = MenuView()
+    window.show_view(menu_view)
     game.setup()
     arcade.run()
 
