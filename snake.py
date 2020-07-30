@@ -55,24 +55,22 @@ class MyGame(arcade.Window):
         self.zR = 0
 
         self.slower = 0
-
+        #score + 4
         self.act = 4
 
         self.score = 0
-
+        # Регулируем сложность
         self.diffic = 0
 
-
+        # Координы сегментов змеи в самом начале игры
         self.XbodyCoordinates = [10,30,50,70]
         self.YbodyCoordinates = [100,100,100,100]
 
     def setup(self):
-        #self.XbodyCoordinates[0] = self.x
-        #self.YbodyCoordinates[0] = self.y
         pass
 
     def on_draw(self):
-
+        # Добавляем координты места, где змея поела. В этом месте создаем новый сегмент тела
         self.body_list = arcade.ShapeElementList()
         if self.ate == True:
             self.XbodyCoordinates.append(self.ateXPrev)
@@ -81,6 +79,7 @@ class MyGame(arcade.Window):
             body = arcade.create_ellipse_filled(self.ateXPrev, self.ateYPrev, radius, radius, arcade.color.DARK_BLUE)
             self.body_list.append(body)
 
+        # Рисуем тело в самом начале игры
         for self.i in range(0, self.act):
             body = arcade.create_ellipse_filled(self.XbodyCoordinates[self.i], self.YbodyCoordinates[self.i], radius, radius, arcade.color.DARK_BLUE)
             self.body_list.append(body)
@@ -89,7 +88,6 @@ class MyGame(arcade.Window):
         arcade.start_render()
         self.body_list.draw()
         arcade.draw_circle_filled(self.eatXPos, self.eatYPos, eatRadius, arcade.color.RED)
-        # Здесь код рисунка
 
     def on_update(self, delta_time):
 
@@ -115,16 +113,16 @@ class MyGame(arcade.Window):
         if 10 < self.score <= 15:
             self.diffic = 6
         if 15 < self.score <= 20:
-            self.diffic = 4
+            self.diffic = 5
         if 20 < self.score <= 25:
-            self.diffic = 2
+            self.diffic = 4
         if 25 < self.score:
-            self.diffic = 1
+            self.diffic = 3
 # Описание движения всех сегментов змеи, кроме головы
-        if self.slower % self.diffic == 0:
+        if self.slower % self.diffic == 0: # балансируем скорость игры
 
             if self.up == True:
-                if self.zU < self.act+1:
+                if self.zU < self.act + 1:
                     self.YbodyCoordinates[self.zU - 1] = self.YbodyCoordinates[self.zU - 2] + radius * 2
                     self.XbodyCoordinates[self.zU - 1] = self.XbodyCoordinates[self.zU - 2]
                     self.zU += 1
@@ -160,17 +158,17 @@ class MyGame(arcade.Window):
 
 # Момент поедания
         for self.j in range (0, self.act):
-            if (self.YbodyCoordinates[self.j] <= self.eatYPos + radius + eatRadius + 15) and (self.YbodyCoordinates[self.j] >= self.eatYPos - radius - eatRadius - 15) and (self.XbodyCoordinates[self.j] <= self.eatXPos + radius + eatRadius + 15) and (self.XbodyCoordinates[self.j] >= self.eatXPos - radius - eatRadius - 15):
+            if (self.YbodyCoordinates[self.j] <= self.eatYPos + radius + eatRadius + 5) and (self.YbodyCoordinates[self.j] >= self.eatYPos - radius - eatRadius - 5) and (self.XbodyCoordinates[self.j] <= self.eatXPos + radius + eatRadius + 5) and (self.XbodyCoordinates[self.j] >= self.eatXPos - radius - eatRadius - 5):
                 self.ateXPrev = self.XbodyCoordinates[0]
                 self.ateYPrev = self.YbodyCoordinates[0]
+                self.ate = True
+                self.act += 1
                 self.score += 1
-                for self.z in range (0, self.act):
-                    if (self.YbodyCoordinates[self.z] <= self.eatYPos + radius + eatRadius + 15) and (self.YbodyCoordinates[self.z] >= self.eatYPos - radius - eatRadius - 15) and (self.XbodyCoordinates[self.z] <= self.eatXPos + radius + eatRadius + 15) and (self.XbodyCoordinates[self.z] >= self.eatXPos - radius - eatRadius - 15):
+                # Проверяем, чтобы координаты пищи не находились на змее, если это так, то генерируем новые координаты еды
+                for self.z in range (0, self.act - 1):
+                    if (self.YbodyCoordinates[self.z] <= self.eatYPos + radius + eatRadius + 5) and (self.YbodyCoordinates[self.z] >= self.eatYPos - radius - eatRadius - 5) and (self.XbodyCoordinates[self.z] <= self.eatXPos + radius + eatRadius + 5) and (self.XbodyCoordinates[self.z] >= self.eatXPos - radius - eatRadius - 5):
                         self.eatXPos = random.randint (1,SCREEN_WIDTH) // 10 * 10
                         self.eatYPos = random.randint (1,SCREEN_HEIGHT) // 10 * 10
-                self.act += 1
-                self.ate = True
-
 
 # Для контроля переменных
         if (self.left == True) or (self.right == True) or (self.up == True) or (self.down == True):
