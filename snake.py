@@ -9,11 +9,11 @@ eatRadius = 5
 #delta_time = 1
 x = 0
 
-class MyGame(arcade.Window):
+class MyGame(arcade.View):
     """ Главный класс приложения. """
 
     def __init__(self, width, height):
-        super().__init__(width, height)
+        super().__init__()
 
         arcade.set_background_color(arcade.color.AMAZON)
         #В какую сторону движется
@@ -36,6 +36,7 @@ class MyGame(arcade.Window):
         self.ateYPrev = 0
 
         self.ate = False
+        self.ate1 = False
 
         self.eatXPos = random.randint (5,SCREEN_WIDTH - 5)
         self.eatYPos = random.randint (5,SCREEN_HEIGHT - 5)
@@ -156,20 +157,29 @@ class MyGame(arcade.Window):
         else:
             self.slower += 1
 
-# Момент поедания
+
+        # Проверяем, чтобы координаты пищи не находились на змее, если это так, то генерируем новые координаты еды
+        for self.z in range (0, self.act - 1):
+            print (self.XbodyCoordinates,' ', self.YbodyCoordinates, ' ', self.ate )
+            if (self.YbodyCoordinates[self.z] <= self.eatYPos + radius + eatRadius + 5) and (self.YbodyCoordinates[self.z] >= self.eatYPos - radius - eatRadius - 5) and (self.XbodyCoordinates[self.z] <= self.eatXPos + radius + eatRadius + 5) and (self.XbodyCoordinates[self.z] >= self.eatXPos - radius - eatRadius - 5):
+                self.eatXPos = random.randint (1,SCREEN_WIDTH)
+                self.eatYPos = random.randint (1,SCREEN_HEIGHT)
+
+        # Проверяем змею на самоукус
+        """for self.z in range (0, self.act - 1):
+            for self.i in range (0, self.act - 1):
+                if (self.z != self.i) and (self.XbodyCoordinates[self.i] == self.XbodyCoordinates[self.z]) and (self.YbodyCoordinates[self.i] == self.YbodyCoordinates[self.z]):
+                    game_over = GameOverView(SCREEN_WIDTH, SCREEN_HEIGHT)
+                    self.window.show_view(game_over)"""
+        # Момент поедания
         for self.j in range (0, self.act):
             if (self.YbodyCoordinates[self.j] <= self.eatYPos + radius + eatRadius + 5) and (self.YbodyCoordinates[self.j] >= self.eatYPos - radius - eatRadius - 5) and (self.XbodyCoordinates[self.j] <= self.eatXPos + radius + eatRadius + 5) and (self.XbodyCoordinates[self.j] >= self.eatXPos - radius - eatRadius - 5):
                 self.ateXPrev = self.XbodyCoordinates[0]
                 self.ateYPrev = self.YbodyCoordinates[0]
                 self.ate = True
+                #self.ate1 = True
                 self.act += 1
                 self.score += 1
-                # Проверяем, чтобы координаты пищи не находились на змее, если это так, то генерируем новые координаты еды
-                for self.z in range (0, self.act - 1):
-                    print (self.z,' ', len(self.XbodyCoordinates),' ', len(self.YbodyCoordinates))
-                    if (self.YbodyCoordinates[self.z] <= self.eatYPos + radius + eatRadius + 5) and (self.YbodyCoordinates[self.z] >= self.eatYPos - radius - eatRadius - 5) and (self.XbodyCoordinates[self.z] <= self.eatXPos + radius + eatRadius + 5) and (self.XbodyCoordinates[self.z] >= self.eatXPos - radius - eatRadius - 5):
-                        self.eatXPos = random.randint (1,SCREEN_WIDTH) // 10 * 10
-                        self.eatYPos = random.randint (1,SCREEN_HEIGHT) // 10 * 10
 
 # Для контроля переменных
         """if (self.left == True) or (self.right == True) or (self.up == True) or (self.down == True):
@@ -218,30 +228,44 @@ class MyGame(arcade.Window):
                 self.right = False
                 self.left = True
 
-class GameOverView(arcade.View):
-    """ Class to manage the game over view """
+class GameIntroView(arcade.View):
+    def __init__(self, width, height):
+        super().__init__()
+
     def on_show(self):
-        """ Called when switching to this view"""
         arcade.set_background_color(arcade.color.BLACK)
 
     def on_draw(self):
-        """ Draw the game over view """
         arcade.start_render()
-        arcade.draw_text("Game Over - press ESCAPE to advance", WIDTH/2, HEIGHT/2,
-                         arcade.color.WHITE, 30, anchor_x="center")
+        arcade.draw_text("Нажмите esc, чтобы начать игру", SCREEN_WIDTH/2, SCREEN_HEIGHT/2,
+                         arcade.color.WHITE, 10, anchor_x="center")
 
-    def on_key_press(self, key, _modifiers):
-        """ If user hits escape, go back to the main menu view """
+    def on_key_press(self, key, modifiers):
         if key == arcade.key.ESCAPE:
-            menu_view = MenuView()
-            self.window.show_view(menu_view)
+            game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
+            self.window.show_view(game)
 
+class GameOverView(arcade.View):
+    def __init__(self, width, height):
+        super().__init__()
+
+    def on_show(self):
+        arcade.set_background_color(arcade.color.BLACK)
+
+    def on_draw(self):
+        arcade.start_render()
+        arcade.draw_text("Игра окончена", SCREEN_WIDTH/2, SCREEN_HEIGHT/2,
+                         arcade.color.WHITE, 10, anchor_x="center")
+
+    def on_key_press(self, key, modifiers):
+        if key == arcade.key.ESCAPE:
+            game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
+            self.window.show_view(game)
 
 def main():
-    game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
-    menu_view = MenuView()
+    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT)
+    menu_view = GameIntroView(SCREEN_WIDTH, SCREEN_HEIGHT)
     window.show_view(menu_view)
-    game.setup()
     arcade.run()
 
 
