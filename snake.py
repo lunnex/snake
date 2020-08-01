@@ -3,11 +3,12 @@ import random
 import time
 from math import floor
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 600
+SCREEN_HEIGHT = 400
 TITLE = 'Snake'
 radius = 10
 eatRadius = 5
+IsCollized = False
 #delta_time = 1
 x = 0
 
@@ -73,9 +74,6 @@ class MyGame(arcade.View):
     def setup(self):
         pass
 
-    #def set_update_rate(1/30):
-    #    pyglet.clock.unschedule(self.on_update)
-
     def on_draw(self):
         # Добавляем координты места, где змея поела. В этом месте создаем новый сегмент тела
         self.body_list = arcade.ShapeElementList()
@@ -91,11 +89,11 @@ class MyGame(arcade.View):
 
 
         arcade.start_render()
+        arcade.draw_text("Счёт: " + str(self.score), 10, SCREEN_HEIGHT - 20, arcade.color.WHITE, 10)
         self.body_list.draw()
         arcade.draw_circle_filled(self.eatXPos, self.eatYPos, eatRadius, arcade.color.RED)
 
     def on_update(self, delta_time):
-
 # Контроль столконовения змеи с краями карты
         if (self.x >= SCREEN_WIDTH - radius) and (self.left == False):
             self.xCollision = True
@@ -167,16 +165,16 @@ class MyGame(arcade.View):
 
 
         # Проверяем, чтобы координаты пищи не находились на змее, если это так, то генерируем новые координаты еды
-        for self.z in range (0, self.act, 2):
-            if (self.YbodyCoordinates[self.z] <= self.eatYPos + radius + eatRadius + 5) and (self.YbodyCoordinates[self.z] >= self.eatYPos - radius - eatRadius - 5) and (self.XbodyCoordinates[self.z] <= self.eatXPos + radius + eatRadius + 5) and (self.XbodyCoordinates[self.z] >= self.eatXPos - radius - eatRadius - 5):
-                while (self.YbodyCoordinates[self.z] <= self.eatYPos + radius + eatRadius + 5) and (self.YbodyCoordinates[self.z] >= self.eatYPos - radius - eatRadius - 5) and (self.XbodyCoordinates[self.z] <= self.eatXPos + radius + eatRadius + 5) and (self.XbodyCoordinates[self.z] >= self.eatXPos - radius - eatRadius - 5):
-                    self.eatXPos = random.randint (1,SCREEN_WIDTH)
-                    self.eatYPos = random.randint (1,SCREEN_HEIGHT)
-                    self.ate = True
-                    self.act += 1
-                    self.score += 1
-                    self.XbodyCoordinates.append(0)
-                    self.YbodyCoordinates.append(0)
+        for self.z in range (0, self.act - 1):
+            if (self.YbodyCoordinates[self.z] < self.eatYPos + radius + eatRadius + 5) and (self.YbodyCoordinates[self.z] > self.eatYPos - radius - eatRadius - 5) and (self.XbodyCoordinates[self.z] < self.eatXPos + radius + eatRadius + 5) and (self.XbodyCoordinates[self.z] > self.eatXPos - radius - eatRadius - 5):
+                while (self.YbodyCoordinates[self.z] < self.eatYPos + radius + eatRadius + 5) and (self.YbodyCoordinates[self.z] > self.eatYPos - radius - eatRadius - 5) and (self.XbodyCoordinates[self.z] < self.eatXPos + radius + eatRadius + 5) and (self.XbodyCoordinates[self.z] > self.eatXPos - radius - eatRadius - 5):
+                    self.eatXPos = random.randint (50,SCREEN_WIDTH - 50)
+                    self.eatYPos = random.randint (50,SCREEN_HEIGHT - 50)
+                self.ate = True
+                self.act += 1
+                self.score += 1
+                self.XbodyCoordinates.append(0)
+                self.YbodyCoordinates.append(0)
 
         # Проверяем змею на самоукус
         for self.z in range (0, self.act - 1):
@@ -185,15 +183,11 @@ class MyGame(arcade.View):
                 if (self.z != self.i) and (self.XbodyCoordinates[self.i] == self.XbodyCoordinates[self.z]) and (self.YbodyCoordinates[self.i] == self.YbodyCoordinates[self.z]):
                     game_over = GameOverView(SCREEN_WIDTH, SCREEN_HEIGHT, TITLE)
                     self.window.show_view(game_over)
-        # Момент поедания
-        """for self.j in range (0, self.act-1):
-            if (self.YbodyCoordinates[self.j] <= self.eatYPos + radius + eatRadius + 5) and (self.YbodyCoordinates[self.j] >= self.eatYPos - radius - eatRadius - 5) and (self.XbodyCoordinates[self.j] <= self.eatXPos + radius + eatRadius + 5) and (self.XbodyCoordinates[self.j] >= self.eatXPos - radius - eatRadius - 5):
-                self.ateXPrev = self.XbodyCoordinates[0]
-                self.ateYPrev = self.YbodyCoordinates[0]"""
 
-# Для контроля переменных
-        """if (self.left == True) or (self.right == True) or (self.up == True) or (self.down == True):
-            print (self.score, ' ', self.act, ' ',self.zU)"""
+        if self.XbodyCoordinates[0] > SCREEN_WIDTH or self.YbodyCoordinates[0] > SCREEN_HEIGHT or self.XbodyCoordinates[0] < 0 or self.YbodyCoordinates[0] < 0:
+            IsCollized = True
+            game_over = GameOverView(SCREEN_WIDTH, SCREEN_HEIGHT, TITLE)
+            self.window.show_view(game_over)
 
     def on_key_press(self, symbol, modifiers):
         if symbol == arcade.key.UP:
@@ -247,11 +241,11 @@ class GameIntroView(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("Нажмите esc, чтобы начать игру", SCREEN_WIDTH/2, SCREEN_HEIGHT/2,
+        arcade.draw_text("Нажмите пробел, чтобы начать игру", SCREEN_WIDTH/2, SCREEN_HEIGHT/2,
                          arcade.color.WHITE, 10, anchor_x="center")
 
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.ESCAPE:
+        if key == arcade.key.SPACE:
             game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT, TITLE)
             self.window.show_view(game)
 
