@@ -3,7 +3,7 @@ import random
 import time
 from math import floor
 
-SCREEN_WIDTH = 600
+SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 400
 TITLE = 'Snake'
 radius = 10
@@ -71,6 +71,8 @@ class MyGame(arcade.View):
         self.XbodyCoordinates = [10,30,50,70]
         self.YbodyCoordinates = [100,100,100,100]
 
+        self.IsGone = False
+
     def setup(self):
         pass
 
@@ -122,7 +124,8 @@ class MyGame(arcade.View):
             self.diffic = 1/90
 
 # Описание движения всех сегментов змеи, кроме головы
-        if self.slower % self.diffic == 0: # балансируем скорость игры
+        if self.slower % self.diffic == 0:
+         # балансируем скорость игры
 
             if self.up == True:
                 if self.zU < self.act + 1:
@@ -159,10 +162,7 @@ class MyGame(arcade.View):
                     self.zU += 1
                 else:
                     self.zU = 0
-            #self.slower += 1
-        #else:
-            #self.slower += 1
-
+            self.IsGone = True
 
         # Проверяем, чтобы координаты пищи не находились на змее, если это так, то генерируем новые координаты еды
         for self.z in range (0, self.act - 1):
@@ -203,34 +203,38 @@ class MyGame(arcade.View):
             pass
 
     def on_key_release(self, symbol, modifiers):
-        if symbol == arcade.key.UP:
+        if symbol == arcade.key.UP and self.IsGone == True:
             if self.down == False:
                 self.up = True
                 self.down = False
                 self.right = False
                 self.left = False
+                self.IsGone == False
 
-        if symbol == arcade.key.DOWN:
+        if symbol == arcade.key.DOWN and self.IsGone == True:
             if self.up == False:
                 self.up = False
                 self.down = True
                 self.right = False
                 self.left = False
+                self.IsGone == False
 
-        if symbol == arcade.key.RIGHT:
+        if symbol == arcade.key.RIGHT and self.IsGone == True:
             if self.left == False:
                 self.left = False
                 self.up = False
                 self.down = False
                 self.right = True
                 self.left = False
+                self.IsGone == False
 
-        if symbol == arcade.key.LEFT:
+        if symbol == arcade.key.LEFT and self.IsGone == True:
             if self.right == False:
                 self.up = False
                 self.down = False
                 self.right = False
                 self.left = True
+                self.IsGone == False
 
 class GameIntroView(arcade.View):
     def __init__(self, width, height, title):
@@ -241,8 +245,7 @@ class GameIntroView(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("Нажмите пробел, чтобы начать игру", SCREEN_WIDTH/2, SCREEN_HEIGHT/2,
-                         arcade.color.WHITE, 10, anchor_x="center")
+        arcade.draw_text("Нажмите пробел, чтобы начать игру", SCREEN_WIDTH/2, SCREEN_HEIGHT/2, arcade.color.WHITE, 20, anchor_x="center")
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.SPACE:
@@ -258,11 +261,10 @@ class GameOverView(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("Игра окончена", SCREEN_WIDTH/2, SCREEN_HEIGHT/2,
-                         arcade.color.WHITE, 10, anchor_x="center")
+        arcade.draw_text("Игра окончена", SCREEN_WIDTH/2, SCREEN_HEIGHT/2, arcade.color.WHITE, 20, anchor_x="center")
 
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.ESCAPE:
+        if key == arcade.key.SPACE:
             game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT, TITLE)
             self.window.show_view(game)
 
